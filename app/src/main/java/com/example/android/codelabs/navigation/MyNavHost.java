@@ -23,7 +23,7 @@ public class MyNavHost extends NavHostFragment {
 
     @NonNull
     @Override
-    protected Navigator<? extends NavDestination> createFragmentNavigator() {
+    protected Navigator createFragmentNavigator() {
         return new MyNavigator(requireContext(), getChildFragmentManager(), getId());
     }
 }
