@@ -51,6 +51,9 @@ class MainActivity : AppCompatActivity() {
 
         // Set up Action Bar
         val navController = host.navController
+        val customNavigator = MyNavigator(this, supportFragmentManager, R.id.my_nav_host_fragment)
+        navController.navigatorProvider.addNavigator(customNavigator)
+
         setupActionBar(navController)
 
         setupNavigationMenu(navController)
