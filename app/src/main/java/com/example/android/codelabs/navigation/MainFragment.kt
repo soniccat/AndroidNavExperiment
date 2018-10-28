@@ -17,8 +17,8 @@
 package com.example.android.codelabs.navigation
 
 import android.os.Bundle
+import android.support.transition.*
 import android.support.v4.app.Fragment
-import android.transition.*
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -39,9 +39,9 @@ class MainFragment : Fragment() {
 //        exitTransition = TransitionInflater.from(context).inflateTransition(R.transition.exit)
 
         var enterTr = TransitionSet().apply {
-            //addTransition(Fade(Visibility.MODE_IN))
-            //addTransition(Slide())
-            addTransition(MyTransition())
+            addTransition(Slide())
+            addTransition(Fade(Visibility.MODE_IN))
+            //addTransition(MyTransition())
         }
 
         enterTr.propagation = CircularPropagation()
@@ -49,9 +49,9 @@ class MainFragment : Fragment() {
         enterTransition = enterTr
 
         var exitTr = TransitionSet().apply {
-            //addTransition(Fade(Visibility.MODE_OUT))
-            //addTransition(Slide())
-            addTransition(MyTransition())
+            addTransition(Slide())
+            addTransition(Fade(Visibility.MODE_OUT))
+            //addTransition(MyTransition())
         }
 
         exitTr.propagation = CircularPropagation()
