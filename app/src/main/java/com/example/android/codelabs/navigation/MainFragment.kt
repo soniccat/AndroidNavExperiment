@@ -17,8 +17,8 @@
 package com.example.android.codelabs.navigation
 
 import android.os.Bundle
-import android.support.transition.*
-import android.support.v4.app.Fragment
+import androidx.transition.*
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -31,7 +31,7 @@ import androidx.navigation.Navigation
 /**
  * Fragment used to show how to navigate to another destination
  */
-class MainFragment : Fragment() {
+class MainFragment : androidx.fragment.app.Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
