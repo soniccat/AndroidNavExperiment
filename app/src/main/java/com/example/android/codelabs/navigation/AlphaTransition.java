@@ -8,46 +8,31 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.transition.Slide;
 import androidx.transition.TransitionValues;
+import androidx.transition.Visibility;
 
-public class MyTransition extends Slide {
-    public MyTransition() {
-        super();
+public class AlphaTransition extends Visibility {
+    public AlphaTransition() {
     }
 
-    public MyTransition(int slideEdge) {
-        super(slideEdge);
-    }
-
-    public MyTransition(Context context, AttributeSet attrs) {
+    public AlphaTransition(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-        Animator a = super.onAppear(sceneRoot, view, startValues, endValues);
         Animator show = ObjectAnimator.ofFloat(view, "alpha", 0.0f, 1.0f);
+        show.setDuration(300);
 
-        AnimatorSet set = new AnimatorSet();
-        set.setInterpolator(a.getInterpolator());
-        set.setDuration(a.getDuration());
-        set.play(a).with(show);
-
-        return set;
+        return show;
     }
 
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-        Animator a = super.onDisappear(sceneRoot, view, startValues, endValues);
         Animator hide = ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0.0f);
+        hide.setDuration(300);
 
-        AnimatorSet set = new AnimatorSet();
-        set.setInterpolator(a.getInterpolator());
-        set.setDuration(a.getDuration());
-        set.play(a).with(hide);
-
-        return set;
+        return hide;
     }
 }

@@ -37,21 +37,23 @@ class FlowStepFragment : androidx.fragment.app.Fragment() {
 
         var enterTr = TransitionSet().apply {
             addTransition(Slide())
-            addTransition(Fade(Visibility.MODE_IN))
-            //addTransition(MyTransition())
+            addTransition(AlphaTransition())
+//            addTransition(Fade(Visibility.MODE_IN))
+//            addTransition(MyTransition())
         }
 
-        enterTr.propagation = CircularPropagation()
+        //enterTr.propagation = CircularPropagation()
         enterTr.duration = 1000;
         enterTransition = enterTr
 
         var exitTr = TransitionSet().apply {
             addTransition(Slide())
-            addTransition(Fade(Visibility.MODE_OUT))
-            //addTransition(MyTransition())
+            addTransition(AlphaTransition())
+//            addTransition(Fade(Visibility.MODE_OUT))
+//            addTransition(MyTransition())
         }
 
-        exitTr.propagation = CircularPropagation()
+        //exitTr.propagation = CircularPropagation()
         exitTr.duration = 1000;
         exitTransition = exitTr
     }
