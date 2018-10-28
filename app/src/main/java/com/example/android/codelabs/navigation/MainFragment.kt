@@ -18,6 +18,7 @@ package com.example.android.codelabs.navigation
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.transition.*
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -31,6 +32,33 @@ import androidx.navigation.Navigation
  * Fragment used to show how to navigate to another destination
  */
 class MainFragment : Fragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        enterTransition = TransitionInflater.from(context).inflateTransition(R.transition.enter)
+//        exitTransition = TransitionInflater.from(context).inflateTransition(R.transition.exit)
+
+        var enterTr = TransitionSet().apply {
+            //addTransition(Fade(Visibility.MODE_IN))
+            //addTransition(Slide())
+            addTransition(MyTransition())
+        }
+
+        enterTr.propagation = CircularPropagation()
+        enterTr.duration = 1000;
+        enterTransition = enterTr
+
+        var exitTr = TransitionSet().apply {
+            //addTransition(Fade(Visibility.MODE_OUT))
+            //addTransition(Slide())
+            addTransition(MyTransition())
+        }
+
+        exitTr.propagation = CircularPropagation()
+        exitTr.duration = 1000;
+        exitTransition = exitTr
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -49,10 +77,10 @@ class MainFragment : Fragment() {
         //TODO STEP 6 - Set NavOptions
 
         val options = NavOptions.Builder()
-            .setEnterAnim(R.anim.slide_in_right)
-            .setExitAnim(R.anim.empty_animation)
-            .setPopEnterAnim(R.anim.empty_animation)
-            .setPopExitAnim(R.anim.slide_out_right)
+//            .setEnterAnim(R.anim.slide_in_right)
+//            .setExitAnim(R.anim.slide_out_left)
+//            .setPopEnterAnim(R.anim.slide_in_left)
+//            .setPopExitAnim(R.anim.slide_out_right)
             .build()
 
         view.findViewById<Button>(R.id.navigate_dest_bt)?.setOnClickListener {

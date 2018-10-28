@@ -18,6 +18,7 @@ package com.example.android.codelabs.navigation
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.transition.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,33 @@ import androidx.navigation.Navigation
  * Presents how multiple steps flow could be implemented.
  */
 class FlowStepFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        enterTransition = TransitionInflater.from(context).inflateTransition(R.transition.enter)
+//        exitTransition = TransitionInflater.from(context).inflateTransition(R.transition.exit)
+
+        var enterTr = TransitionSet().apply {
+            //addTransition(Fade(Visibility.MODE_IN))
+            //addTransition(Slide())
+            addTransition(MyTransition())
+        }
+
+        enterTr.propagation = CircularPropagation()
+        enterTr.duration = 1000;
+        enterTransition = enterTr
+
+        var exitTr = TransitionSet().apply {
+            //addTransition(Fade(Visibility.MODE_OUT))
+            //addTransition(Slide())
+            addTransition(MyTransition())
+        }
+
+        exitTr.propagation = CircularPropagation()
+        exitTr.duration = 1000;
+        exitTransition = exitTr
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

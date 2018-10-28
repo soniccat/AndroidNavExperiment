@@ -15,7 +15,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             app:startDestination="@+id/launcher_home">
-    <myfragment
+    <fragment
         android:id="@+id/launcher_home"
         android:name="com.example.android.codelabs.navigation.MainFragment"
         android:label="@string/home"
@@ -24,17 +24,13 @@
         <!-- TODO STEP 8 - Add action with transitions -->
         <action
             android:id="@+id/next_action"
-            app:destination="@+id/flow_step_one"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@+id/flow_step_one"/>
 
         <!-- TODO ENDSTEP -->
 
-    </myfragment>
+    </fragment>
 
-    <myfragment
+    <fragment
         android:id="@+id/flow_step_one"
         android:name="com.example.android.codelabs.navigation.FlowStepFragment"
         tools:layout="@layout/flow_step_one_fragment">
@@ -45,11 +41,14 @@
 
         <action
             android:id="@+id/next_action"
-            app:destination="@+id/flow_step_two">
-        </action>
-    </myfragment>
+            app:destination="@+id/flow_step_two"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
 
-    <myfragment
+    <fragment
         android:id="@+id/flow_step_two"
         android:name="com.example.android.codelabs.navigation.FlowStepFragment"
         tools:layout="@layout/flow_step_two_fragment">
@@ -63,17 +62,17 @@
             android:id="@+id/next_action"
             app:popUpTo="@id/launcher_home">
         </action>
-    </myfragment>
+    </fragment>
 
      <!--TODO STEP 4 Create a new navigation destination pointing to SettingsFragment-->
-    <myfragment
+    <fragment
         android:id="@+id/settings_fragment"
         android:name="com.example.android.codelabs.navigation.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings"/>
      <!--TODO END STEP 4-->
 
-    <myfragment
+    <fragment
         android:id="@+id/android"
         android:name="com.example.android.codelabs.navigation.DeepLinkFragment"
         android:label="@string/deeplink"
@@ -87,5 +86,5 @@
         <deepLink app:uri="www.example.com/{myarg}" />
 
         <!-- TODO END STEP 12 -->
-    </myfragment>
+    </fragment>
 </navigation>
