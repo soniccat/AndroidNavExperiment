@@ -30,8 +30,8 @@ public class AlphaTransition extends Visibility {
 
     @Override
     public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-        Animator hide = ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0.0f);
-        hide.setDuration(300);
+        Animator hide = ObjectAnimator.ofFloat((View)view, "alpha", 1.0f, 0.0f);
+        hide.setDuration(100);
 
         return hide;
     }

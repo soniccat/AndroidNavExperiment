@@ -16,15 +16,19 @@
 
 package com.example.android.codelabs.navigation
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.*
+import android.view.animation.AccelerateInterpolator
 import androidx.transition.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 
@@ -39,10 +43,10 @@ class MainFragment : androidx.fragment.app.Fragment() {
 //        exitTransition = TransitionInflater.from(context).inflateTransition(R.transition.exit)
 
         var enterTr = TransitionSet().apply {
-            addTransition(Slide())
-            addTransition(AlphaTransition())
+//            addTransition(Slide())
+//            addTransition(AlphaTransition())
 //            addTransition(Fade(Visibility.MODE_IN))
-//            addTransition(MyTransition())
+            addTransition(MyTransition())
         }
 
         //enterTr.propagation = CircularPropagation()
@@ -96,6 +100,31 @@ class MainFragment : androidx.fragment.app.Fragment() {
         )
 
         //TODO ENDSTEP 7
+
+        val textView = view.findViewById<TextView>(R.id.text)
+
+        view.findViewById<Button>(R.id.navigate_action_bt2)?.setOnClickListener {
+            val view = View(context)
+            view.layoutParams = FrameLayout.LayoutParams(400, 400)
+            view.background = ColorDrawable(Color.RED)
+
+            (getView() as ViewGroup).overlay.add(view)
+            val widthSpec = View.MeasureSpec.makeMeasureSpec(400, View.MeasureSpec.EXACTLY)
+            val heightSpec = View.MeasureSpec.makeMeasureSpec(400, View.MeasureSpec.EXACTLY)
+            view.measure(widthSpec, heightSpec)
+            view.layout(0, 0, 400, 400)
+
+            val alphaAnimator = ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0.0f)
+            val translateAnimator = ObjectAnimator.ofPropertyValuesHolder(view,
+                    PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 0.0f, 500.0f));
+            translateAnimator.interpolator = AccelerateInterpolator()
+
+            alphaAnimator.setDuration(500)
+            translateAnimator.setDuration(500)
+
+            alphaAnimator.start();
+            translateAnimator.start();
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
