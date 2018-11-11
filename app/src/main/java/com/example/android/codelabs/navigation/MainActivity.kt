@@ -26,9 +26,13 @@ import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.Navigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 
@@ -36,6 +40,9 @@ import androidx.navigation.ui.NavigationUI
  * A simple activity demonstrating use of a NavHostFragment with a navigation drawer.
  */
 class MainActivity : AppCompatActivity() {
+    private var navState: Bundle? = Bundle.EMPTY
+
+    private var navController: NavController = NavController(this)
     private var drawerLayout: androidx.drawerlayout.widget.DrawerLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +57,13 @@ class MainActivity : AppCompatActivity() {
 
 
         // Set up Action Bar
-        val navController = host.navController
+        navController = host.navController
         //val customNavigator = MyNavigator(this, supportFragmentManager, R.id.my_nav_host_fragment)
         //navController.navigatorProvider.addNavigator(customNavigator)
 
-        setupActionBar(navController)
+        //setupActionBar(navController)
 
-        setupNavigationMenu(navController)
+        //setupNavigationMenu(navController)
 
         setupBottomNavMenu(navController)
 
@@ -71,18 +78,48 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT).show()
             Log.d("NavigationActivity", "Navigated to $dest")
         }
+
+        updateFragmentVisibility()
     }
 
+    private fun currentNavController(): NavController {
+        val id = if (isFirstPageActive()) R.id.my_nav_host_fragment else R.id.my_nav_host_fragment2
+
+        val host: NavHostFragment = supportFragmentManager
+                .findFragmentById(id) as NavHostFragment
+        return host.navController
+    }
+
+    private fun isFirstPageActive() =
+            findViewById<BottomNavigationView>(R.id.bottom_nav_view).selectedItemId == R.id.launcher_home
+
     private fun setupBottomNavMenu(navController: NavController) {
-        findViewById<BottomNavigationView>(R.id.bottom_nav_view)?.let { bottomNavView ->
-            NavigationUI.setupWithNavController(bottomNavView, navController)
-        }
+//        findViewById<BottomNavigationView>(R.id.bottom_nav_view)?.let { bottomNavView ->
+//            NavigationUI.setupWithNavController(bottomNavView, navController)
+//        }
+
+        findViewById<BottomNavigationView>(R.id.bottom_nav_view)?.setOnNavigationItemSelectedListener({item ->
+            //navController.navigate(item.getItemId())
+            updateFragmentVisibility()
+            true
+        })
+    }
+
+    private fun updateFragmentVisibility() {
+        val isFirstVisible = isFirstPageActive()
+        val fragment1 = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment)
+        val fragment2 = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment2)
+        fragment1!!.view!!.visibility = if (isFirstVisible) View.VISIBLE else View.INVISIBLE
+        fragment2!!.view!!.visibility = if (isFirstVisible) View.INVISIBLE else View.VISIBLE
+
+        val newPrimary = if (isFirstVisible) fragment1 else fragment2
+        supportFragmentManager.beginTransaction().setPrimaryNavigationFragment(newPrimary).commitAllowingStateLoss()
     }
 
     private fun setupNavigationMenu(navController: NavController) {
-        findViewById<NavigationView>(R.id.nav_view)?. let { navigationView ->
-            NavigationUI.setupWithNavController(navigationView, navController)
-        }
+//        findViewById<NavigationView>(R.id.nav_view)?. let { navigationView ->
+//            NavigationUI.setupWithNavController(navigationView, navController)
+//        }
     }
 
     private fun setupActionBar(navController: NavController) {
@@ -107,6 +144,23 @@ class MainActivity : AppCompatActivity() {
         // Have the NavHelper look for an action or destination matching the menu
         // item id and navigate there if found.
         // Otherwise, bubble up to the parent.
+        if (item.itemId == R.id.save_state) {
+            val host: NavHostFragment = supportFragmentManager
+                    .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
+            val fragment: Fragment = host.childFragmentManager.getFragments().get(0)
+
+            navState = navController.saveState()
+            supportFragmentManager
+            return true;
+        } else if (item.itemId == R.id.restore_state) {
+            navController.restoreState(navState)
+            val navigator: FragmentNavigator = navController.navigatorProvider.getNavigator<FragmentNavigator.Destination, FragmentNavigator>(FragmentNavigator::class.java)
+
+            val destination = navController.currentDestination as FragmentNavigator.Destination
+            navigator.navigate(destination, destination.defaultArguments, null, null)
+            return true;
+        }
+
         return NavigationUI.onNavDestinationSelected(item,
                 Navigation.findNavController(this, R.id.my_nav_host_fragment))
                 || super.onOptionsItemSelected(item)

@@ -54,10 +54,10 @@ class MainFragment : androidx.fragment.app.Fragment() {
         enterTransition = enterTr
 
         var exitTr = TransitionSet().apply {
-            addTransition(Slide())
-            addTransition(AlphaTransition())
+//            addTransition(Slide())
+//            addTransition(AlphaTransition())
 //            addTransition(Fade(Visibility.MODE_OUT))
-//            addTransition(MyTransition())
+            addTransition(MyTransition())
         }
 
         //exitTr.propagation = CircularPropagation()
